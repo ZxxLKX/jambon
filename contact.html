@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order - NATO STORE PREMIUM VPN</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #121212;
+            color: #fff;
+        }
+        .navbar {
+            background-color: #b30000; /* Warna Merah */
+        }
+        .btn-custom {
+            background-color: #b30000;
+            color: #fff;
+            border: none;
+        }
+        .btn-custom:hover {
+            background-color: #ff3333;
+        }
+        .footer {
+            background-color: #000;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+        h1, h2, p {
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">NATO STORE PREMIUM VPN</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Order</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <!-- Form Order -->
+        <form id="orderForm">
+            <!-- Nama -->
+            <div class="mb-3">
+                <label for="name" class="form-label">Nama</label>
+                <input type="text" class="form-control bg-dark text-white" id="name" name="name" required>
+            </div>
+            <!-- Pilih Layanan -->
+            <div class="mb-3">
+                <label for="service" class="form-label">Pilih Config Yang Ingin Di Order</label>
+                <select class="form-select bg-dark text-white" id="service" name="service" required>
+                    <option value="" disabled selected>Pilih Dengan Benar</option>
+                    <option value="TROJAN">TROJAN</option>
+                    <option value="SSH">SSH</option>
+                    <option value="VMESS">VMESS</option>
+                    <option value="VLESS">VLESS</option>
+                </select>
+            </div>
+
+            <!-- Pilih Paket -->
+            <div class="mb-3">
+                <label for="package" class="form-label">Pilih Paket Hari</label>
+                <select class="form-select bg-dark text-white" id="package" name="package" required>
+                    <option value="" disabled selected>Select a package</option>
+                    <option value="3000">7 Days - Rp.3000 (1 IP)</option>
+                    <option value="5000">15 Days - Rp.5000 (1 IP)</option>
+                    <option value="10000">30 Days - Rp.10000 (2 IP)</option>
+                </select>
+            </div>
+
+            <!-- Tambah IP -->
+            <div class="mb-3">
+                <label for="extra_ip" class="form-label">Tambah 1 IP (Rp.1000 per IP)</label>
+                <input type="number" class="form-control bg-dark text-white" id="extra_ip" name="extra_ip" min="0" value="0">
+            </div>
+
+            <!-- Pilih Pembayaran -->
+            <div class="mb-3">
+                <label for="payment" class="form-label">Pilih Metode Pembayaran</label>
+                <select class="form-select bg-dark text-white" id="payment" name="payment" required>
+                    <option value="" disabled selected>Pilih Metode Pembayaran</option>
+                    <option value="Dana">Dana</option>
+                    <option value="Gopay">Gopay</option>
+                    <option value="QRIS">QRIS</option>
+                    <option value="ShopeePay">ShopeePay</option>
+                </select>
+            </div>
+
+            <!-- Total Harga -->
+            <div class="mb-3">
+                <label for="total" class="form-label">Total Harga</label>
+                <input type="text" class="form-control bg-dark text-white" id="total" name="total" readonly>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-custom">Pencet Tombol Untuk Order</button>
+            </div>
+        </form>
+    </div>
+
+    <footer class="footer mt-5">
+        <p>&copy; 2024 NATO STORE PREMIUM VPN. All rights reserved.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // JavaScript untuk menghitung total harga dan menangani pengiriman form ke WhatsApp
+        document.getElementById('orderForm').addEventListener('input', function () {
+            const packagePrice = parseInt(document.getElementById('package').value) || 0;
+            const extraIp = parseInt(document.getElementById('extra_ip').value) || 0;
+            const totalPrice = packagePrice + (extraIp * 1000); // Rp.1000 per IP tambahan
+            document.getElementById('total').value = `Rp.${totalPrice}`;
+        });
+
+        document.getElementById('orderForm').addEventListener('submit', function (e) {
+            e.preventDefault(); // Mencegah reload halaman
+
+            // Ambil data dari form
+            const name = document.getElementById('name').value;
+            const service = document.getElementById('service').value;
+            const package = document.getElementById('package').value;
+            const extraIp = document.getElementById('extra_ip').value;
+            const payment = document.getElementById('payment').value;
+            const total = document.getElementById('total').value;
+
+            // Format pesan untuk WhatsApp
+            let message = `Halo, saya ingin order:\n\n`;
+            message += `Nama: ${name}\n`;
+            message += `Layanan: ${service}\n`;
+            message += `Paket: ${package} Hari\n`;
+            message += `Tambahan IP: ${extraIp} IP\n`;
+            message += `Metode Pembayaran: ${payment}\n`;
+            message += `Total Harga: ${total}\n\n`;
+            message += `Terima kasih!`;
+
+            // Ganti nomor WhatsApp dengan nomor Anda (format: 6281234567890)
+            const whatsappUrl = `https://wa.me/6285335903344?text=${encodeURIComponent(message)}`;
+
+            // Arahkan ke WhatsApp
+            window.open(whatsappUrl, '_blank');
+        });
+    </script>
+</body>
+</html>
