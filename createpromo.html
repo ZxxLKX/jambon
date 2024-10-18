@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Promo Code</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #121212;
+            color: #fff;
+        }
+        .navbar {
+            background-color: #b30000;
+        }
+        .btn-custom {
+            background-color: #000;
+            color: #fff;
+            border: 2px solid #b30000;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+        .btn-custom:hover {
+            background-color: #333;
+            color: #ff3333;
+            border-color: #ff3333;
+        }
+        .footer {
+            background-color: #000;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+        h1, h2, p {
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">Create Promo Code</a>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <h1 class="text-center">Buat Kode Promo</h1>
+        <form id="promoForm">
+            <!-- Input Kode Promo -->
+            <div class="mb-3">
+                <label for="promoCode" class="form-label">Kode Promo</label>
+                <input type="text" class="form-control bg-dark text-white" id="promoCode" required>
+            </div>
+
+            <!-- Input Diskon Persen -->
+            <div class="mb-3">
+                <label for="discountPercentage" class="form-label">Diskon (%)</label>
+                <input type="number" class="form-control bg-dark text-white" id="discountPercentage" min="0" max="100" required>
+            </div>
+
+            <!-- Input Expired Date -->
+            <div class="mb-3">
+                <label for="expiryDate" class="form-label">Tanggal Kedaluwarsa</label>
+                <input type="date" class="form-control bg-dark text-white" id="expiryDate" required>
+            </div>
+
+            <!-- Tombol Buat Promo -->
+            <div class="text-center mt-4">
+                <button type="button" class="btn btn-custom" id="createPromoBtn">Buat Promo</button>
+            </div>
+        </form>
+
+        <h2 class="text-center mt-5">Kode Promo Tersedia</h2>
+        <ul id="promoList" class="list-group bg-dark text-white"></ul>
+    </div>
+
+    <footer class="footer mt-5">
+        <p>&copy; 2024 NATO STORE PREMIUM VPN. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Array untuk menyimpan kode promo
+        let promoCodes = [];
+
+        // Fungsi untuk menyimpan promo ke localStorage
+        function savePromoCodes() {
+            localStorage.setItem('promoCodes', JSON.stringify(promoCodes));
+        }
+
+        // Fungsi untuk mengambil promo dari localStorage saat halaman dimuat
+        function loadPromoCodes() {
+            const storedPromoCodes = localStorage.getItem('promoCodes');
+            if (storedPromoCodes) {
+                promoCodes = JSON.parse(storedPromoCodes);
+                displayPromoCodes();
+            }
+        }
+
+        // Fungsi untuk menampilkan kode promo
+        function displayPromoCodes() {
+            const promoList = document.getElementById('promoList');
+            promoList.innerHTML = ''; // Kosongkan daftar promo
+
+            promoCodes.forEach(promo => {
+                const listItem = document.createElement('li');
+                listItem.classList.add('list-group-item', 'bg-dark', 'text-white');
+                listItem.textContent = `Kode: ${promo.code} - Diskon: ${promo.discount}% - Expired: ${promo.expiry}`;
+                promoList.appendChild(listItem);
+            });
+        }
+
+        // Fungsi untuk mengecek apakah promo sudah expired
+        function isPromoExpired(expiryDate) {
+            const today = new Date();
+            const expiry = new Date(expiryDate);
+            return today > expiry; // True jika promo sudah expired
+        }
+
+        // Tambah event listener untuk tombol buat promo
+        document.getElementById('createPromoBtn').addEventListener('click', function () {
+            const promoCode = document.getElementById('promoCode').value;
+            const discountPercentage = document.getElementById('discountPercentage').value;
+            const expiryDate = document.getElementById('expiryDate').value;
+
+            if (promoCode && discountPercentage && expiryDate) {
+                // Simpan promo ke array dan localStorage
+                promoCodes.push({ code: promoCode, discount: discountPercentage, expiry: expiryDate });
+                savePromoCodes();  // Simpan ke localStorage
+                document.getElementById('promoForm').reset(); // Reset form
+                displayPromoCodes(); // Tampilkan promo
+            } else {
+                alert('Harap isi semua field!');
+            }
+        });
+
+        // Saat halaman dimuat, ambil promo dari localStorage
+        window.onload = function() {
+            loadPromoCodes();
+        };
+
+        // Fungsi untuk mendapatkan promo yang valid (belum expired)
+        function getValidPromo(code) {
+            const promo = promoCodes.find(promo => promo.code === code);
+            if (promo) {
+                if (isPromoExpired(promo.expiry)) {
+                    alert('Kode promo sudah kedaluwarsa.');
+                    return null;
+                } else {
+                    return promo;
+                }
+            } else {
+                alert('Kode promo tidak ditemukan.');
+                return null;
+            }
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+                  </html>
