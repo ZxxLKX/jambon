@@ -144,16 +144,7 @@
         <p>&copy; 2024 NATO STORE PREMIUM VPN. All rights reserved.</p>
     </footer>
 
-    <script type="text/javascript">
-        const promoCodes = {
-            'PROMO10': 10, // Diskon 10%
-            'PROMO5': 5, // Diskon 5%
-            'PROMO2': 2, // Diskon 2%
-            'PROMO20': 20, // Diskon 20%
-            'PROMO30': 30, // Diskon 30%
-            // Tambahkan kode promo lain di sini jika perlu
-        };
-
+    <script>
         // Function untuk mengambil tanggal dan waktu saat ini
         function getCurrentDateTime() {
             const now = new Date();
@@ -167,21 +158,30 @@
             return `${day}-${month}-${year} Waktu ${hours}:${minutes}:${seconds}`;
         }
 
+        // Fungsi untuk memeriksa apakah promo DISKON2% valid sampai tanggal 21 Oktober 2024
+        function isPromoValid() {
+            const now = new Date();
+            const expiryDate = new Date(2024, 10, 20, 11, 0, 0); // TAHUN BULAN TANGGAL JAM MENIT DETIK
+            return now <= expiryDate;
+        }
+
         // JavaScript untuk menghitung total harga dan menangani pengiriman form ke WhatsApp
         document.getElementById('orderForm').addEventListener('input', function () {
             const packagePrice = parseInt(document.getElementById('package').value) || 0;
             const extraIp = parseInt(document.getElementById('extra_ip').value) || 0;
-            const promoCode = document.getElementById('promo_code').value.toUpperCase(); // Ambil kode promo
-            const discount = promoCodes[promoCode] || 0; // Diskon sesuai kode promo atau 0 jika tidak ada kode promo
+            const promoCode = document.getElementById('promo_code').value;
+            let totalPrice = packagePrice + (extraIp * 1000);
 
-            // Hitung total harga dan diskon
-            const totalPrice = packagePrice + (extraIp * 1000);
-            const discountedPrice = totalPrice - (totalPrice * (discount / 100));
+            // Cek apakah kode promo digunakan dan apakah masih valid
+            if (promoCode === "N4T0ST0R32024" && isPromoValid()) {
+                totalPrice = totalPrice * 0.97; // Terapkan diskon 2%
+            }
 
-// Tampilkan harga yang telah didiskon
-            document.getElementById('total').value = `Rp.${discountedPrice}`;
+            // Tampilkan harga yang telah didiskon
+            document.getElementById('total').value = `Rp.${totalPrice}`;
         });
 
+        // Pengiriman ke WhatsApp saat
         // Pengiriman ke WhatsApp saat form disubmit
         document.getElementById('orderForm').addEventListener('submit', function (e) {
             e.preventDefault(); // Mencegah reload halaman
@@ -199,7 +199,7 @@
                     packageDays = "15"; // 15 Hari untuk harga Rp.5000
                     break;
                 case "9000":
-                    packageDays = "30"; // 30 Hari untuk harga Rp.8000
+                    packageDays = "30"; // 30 Hari untuk harga Rp.9000
                     break;
                 case "10000":
                     packageDays = "30"; // 30 Hari untuk harga Rp.10000
@@ -235,4 +235,4 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-</html>
+    </html>
