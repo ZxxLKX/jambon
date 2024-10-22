@@ -161,8 +161,15 @@
         // Fungsi untuk memeriksa apakah promo DISKON2% valid sampai tanggal 21 Oktober 2024
         function isPromoValid() {
             const now = new Date();
-            const expiryDate = new Date(2024, 10, 20, 11, 0, 0); // TAHUN BULAN TANGGAL JAM MENIT DETIK
-            return now <= expiryDate;
+const expiryDate = new Date();
+expiryDate.setFullYear(2024);
+expiryDate.setMonth(10); // 10 = November
+expiryDate.setDate(22);
+expiryDate.setHours(21);
+expiryDate.setMinutes(0);
+expiryDate.setSeconds(0);
+
+return now <= expiryDate;
         }
 
         // JavaScript untuk menghitung total harga dan menangani pengiriman form ke WhatsApp
